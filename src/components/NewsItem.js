@@ -4,8 +4,8 @@ const NewsItem =(props)=> {
   //we cam do this destructuring in function based also
     let { title, description, ImgUrl, newsUrl, source, author, date, color } = props;
     return (
-      <div >
-        <div className="card my-3 " style={{ width: "18rem" ,height:"28rem" }}>
+      <div className='container d-flex justify-content-center'  >
+        <div className="card my-3   " style={{ width: "18rem" ,height:"26rem" }}>
           <div style={{ display: "flex", justifyContent: 'flex-end', position: 'absolute', right: "0" }}>
             <span className={` badge rounded-pill bg-${color}`}>
               {source}
@@ -14,7 +14,7 @@ const NewsItem =(props)=> {
 
           <img src={!ImgUrl ? "https://img1.s3wfg.com/web/img/images_uploaded/d/3/ep_archivo_-_tienda_apple_store_en_nueva_york.jpg" : ImgUrl} className="card-img-top" style={{ height: "180px", width: "auto", display: "flex", justifyContent: "center", alignContent: "center" }} alt="..." />
 
-          <div className="card-body">
+          <div className="card-body d-flex justify-content-between flex-column">
 
             <h5 className="card-title">{title}...</h5>
             <p className="card-text">{description}...</p>
