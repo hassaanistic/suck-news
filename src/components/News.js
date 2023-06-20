@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import NewsItem from "./NewsItem";
-import Spinner from "./Spinner";
-import PropTypes from "prop-types";
+  import PropTypes from "prop-types";
 
 const News = (props) => {
 
   const [article, setarticle] = useState([])
   //article ki initial value empty hi thi ham na just Page bnany k lye sab lya tha us mn sample json
+  const [loading, setloading] = useState(true)
   const [page, setpage] = useState(1)
   const [totalResults, settotalResults] = useState(0)
 
@@ -21,7 +21,8 @@ const News = (props) => {
   const update = async () => {
     props.setProgress(10);
     //progress bar
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.cetagory}&apiKey=ac8876d9623a44e1877f2be5f4e9885a&pageSize=${props.pageSize}&page=${page}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.cetagory}&apiKey=bc7191feb8fb4e1b88ad3923c66f505e&pageSize=${props.pageSize}&page=${page}`;
+    setloading(true)
     let data = await fetch(url);
     props.setProgress(30);
     let parsedData = await data.json();
@@ -29,6 +30,7 @@ const News = (props) => {
 
     setarticle(parsedData.articles)
     settotalResults(parsedData.totalResults)
+    setloading(false)
 
     props.setProgress(100);
   }
@@ -44,12 +46,13 @@ const News = (props) => {
     update();
   }, [])
 
-
+  
   const prevbtn = async () => {
     props.setProgress(10);
     //progress bar
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.cetagory}&apiKey=ac8876d9623a44e1877f2be5f4e9885a&pageSize=${props.pageSize}&page=${page - 1}`;
-    setpage(page - 1)
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.cetagory}&apiKey=bc7191feb8fb4e1b88ad3923c66f505e&pageSize=${props.pageSize}&page=${page-1}`;
+    setpage(page -1)
+    setloading(true)
     let data = await fetch(url);
     props.setProgress(30);
     let parsedData = await data.json();
@@ -57,16 +60,18 @@ const News = (props) => {
 
     setarticle(parsedData.articles)
     settotalResults(parsedData.totalResults)
+    setloading(false)
 
     props.setProgress(100);
-
+  
 
   };
   const nextbtn = async () => {
     props.setProgress(10);
     //progress bar
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.cetagory}&apiKey=ac8876d9623a44e1877f2be5f4e9885a&pageSize=${props.pageSize}&page=${page + 1}`;
-    setpage(page + 1)
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.cetagory}&apiKey=bc7191feb8fb4e1b88ad3923c66f505e&pageSize=${props.pageSize}&page=${page+1}`;
+    setpage(page +1)
+    setloading(true)
     let data = await fetch(url);
     props.setProgress(30);
     let parsedData = await data.json();
@@ -74,6 +79,7 @@ const News = (props) => {
 
     setarticle(parsedData.articles)
     settotalResults(parsedData.totalResults)
+    setloading(false)
 
     props.setProgress(100);
   };
@@ -83,35 +89,34 @@ const News = (props) => {
         NewsMonkey's Top {capitalized(props.cetagory)} Headlines
       </h1>
 
-      <div className="container d-flex justify-content-center my-3 ">
-        <div className=" container d-flex justify-content-center  row">
-          {article.map((elem) => {
-            return (
-              <div className="col md-3" key={elem.url}>
-                <NewsItem
-                  title={elem.title ? elem.title.slice(0, 40) : ""}
-                  description={
-                    elem.description ? elem.description.slice(0, 50) : ""
-                  }
-                  ImgUrl={elem.urlToImage}
-                  newsUrl={elem.url}
-                  author={elem.author}
-                  date={elem.publishedAt}
-                  source={elem.source.name}
-                  color={props.color}
-                />
-              </div>
-            );
-          })}
+        <div className="container d-flex justify-content-center my-3 ">
+          <div className=" container d-flex justify-content-center  row">
+            {article.map((elem) => {
+              return (
+                <div className="col md-3" key={elem.url}>
+                  <NewsItem
+                    title={elem.title ? elem.title.slice(0, 40) : ""}
+                    description={
+                      elem.description ? elem.description.slice(0, 50) : ""
+                    }
+                    ImgUrl={elem.urlToImage}
+                    newsUrl={elem.url}
+                    author={elem.author}
+                    date={elem.publishedAt}
+                    source={elem.source.name}
+                    color={props.color}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {<Spinner /> &&
-        <div className="container d-flex justify-content-between  px-5 ">
-          <button type="button" disabled={page <= 1} className="btn btn-dark" onClick={prevbtn} >PrevBtn</button>
-          <button type="button" className="btn btn-dark " disabled={page === (Math.ceil(totalResults / props.pageSize))} onClick={nextbtn} >Nextbtn</button>
-        </div>
-      }
+
+      <div className="container d-flex justify-content-between  px-5 ">
+        <button type="button" disabled={page<=1} className="btn btn-dark" onClick={prevbtn} >PrevBtn</button>
+        <button type="button"  className="btn btn-dark " disabled={page===(Math.ceil(totalResults/props.pageSize))}  onClick={nextbtn} >Nextbtn</button>
+      </div>
     </>
   );
 }
