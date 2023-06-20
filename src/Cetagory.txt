@@ -1,0 +1,11 @@
+//for your ease of making the routes
+
+<Route exact path="/business" element={<News cetagory="business" />} /> 
+<Route exact path="/entertainment" element={<News cetagory="entertainment" />} /> 
+<Route exact path="/general" element={<News cetagory="general" />} /> 
+<Route exact path="/health" element={<News cetagory="health" />} /> 
+<Route exact path="/science" element={<News cetagory="science" />} /> 
+<Route exact path="/sports" element={<News cetagory="sports" />} /> 
+<Route exact path="/technology" element={<News cetagory="technology" />} /> 
+
+<Route exact path="/" element={<News cetagory="health" />} /> 
